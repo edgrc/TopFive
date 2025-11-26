@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Top Ten - Tirage de thème</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      background-color: #f0f8ff;
+    }
+    #theme {
+      font-size: 28px;
+      margin-top: 30px;
+      color: #2c3e50;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎲 Choisis ton thème Top Ten</h1>
+  <button onclick="tirerTheme()">Tirer un thème</button>
+  <div id="theme"></div>
+
+  <script>
+    const themes = [
+      "Cinéma",
+      "Nourriture",
+      "Sports",
+      "Activités de plein air",
+      "Jeux vidéo",
+      "Voyages",
+      "Animaux",
+      "Musique",
+      "École",
+      "Technologie",
+      "Séries TV",
+      "Fêtes",
+      "Objets du quotidien",
+      "Métiers",
+      "Super-héros"
+    ];
+
+    function tirerTheme() {
+      const index = Math.floor(Math.random() * themes.length);
+      document.getElementById("theme").textContent = "🎯 Thème : " + themes[index];
+    }
+  </script>
+
+</body>
+</html>
