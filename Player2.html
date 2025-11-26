@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chiffre Mystère</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #2e2c50, #4c8caf);
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+        }
+
+        #inputNumber {
+            font-size: 30px;
+            padding: 10px;
+            border: 2px solid white;
+            border-radius: 10px;
+            text-align: center;
+            width: 150px;
+            filter: blur(10px); /* Ajout du flou */
+            transition: filter 0.5s ease-in-out;
+        }
+        
+
+        #texte1 {
+            font-size: 50px;
+            padding: 60px;
+            text-align: center;
+            width: 800px;
+            animation: shake 0.9s infinite alternate;
+        }
+
+
+
+        #inputNumber:focus {
+            filter: blur(0px); /* Supprime le flou au focus */
+        }
+
+        #numberBox {
+            font-size: 50px;
+            padding: 20px;
+            border: 2px solid white;
+            border-radius: 10px;
+            backdrop-filter: blur(20px);
+            transition: all 0.5s ease-in-out;
+            
+        }
+
+        .victory {
+            color: #00ff00;
+            text-shadow: 0px 0px 10px #00ff00;
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        .defeat {
+            color: red;
+            text-shadow: 0px 0px 10px red;
+            animation: shake 0.5s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-10px); }
+        }
+
+        @keyframes shake {
+            from { transform: rotate(-2deg); }
+            to { transform: rotate(2deg); }
+        }
+    </style>
+</head>
+
+<body>
+    
+    <div id="texte1">🔮 Devine le Chiffre ! 🔮</div>
+    <input type="text" id="inputNumber" placeholder="Entre un chiffre" maxlength="3">
+    <div id="numberBox">???</div>
+
+    <script>
+        const inputNumber = document.getElementById("inputNumber");
+        const numberBox = document.getElementById("numberBox");
+
+        inputNumber.addEventListener("input", () => {
+            numberBox.textContent = "???"; // Le chiffre reste caché
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "v" || event.key === "V") {
+                numberBox.textContent = inputNumber.value;
+                numberBox.classList.add("victory");
+                numberBox.classList.remove("defeat");
+            }
+
+            if (event.key === "d" || event.key === "D") {
+                numberBox.textContent = inputNumber.value;
+                numberBox.classList.add("defeat");
+                numberBox.classList.remove("victory");
+            }
+            
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demi-roue interactive</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background: linear-gradient(to right, #372c50, #3d7297);
+            color: white;
+            font-family: 'Comic Sans MS', cursive;
+            text-align: center;
+        }
+
+
+        #texte1 {
+            font-size: 60px;
+            padding: 40px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 1000px;
+            animation: bounce 0.6s infinite alternate;
+        }
+
+        canvas {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #sliderContainer {
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(93, 157, 221, 0.394);
+            border-radius: 10px;
+        }
+
+        input[type="range"] {
+            width: 300px;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-10px); }
+        }
+
+        @keyframes shake {
+            from { transform: rotate(-2deg); }
+            to { transform: rotate(2deg); }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="texte1">💫 Roue Mystique 💫</div>
+    <canvas id="wheelCanvas" width="500" height="350"></canvas>
+    <div id="sliderContainer">
+        <label for="angleSlider">Déplace la flèche :</label>
+        <input type="range" id="angleSlider" min="-90" max="90" value="0">
+    </div>
+
+    <iframe id="youtubePlayer" width="0" height="0"
+        src="https://www.youtube.com/embed/1GZZdIed_qw?autoplay=1&loop=1"
+        frameborder="0" allow="autoplay">
+    </iframe>
+
+    <button id="musicToggle">🎵 Play / Pause</button>
+
+    <script>
+        const canvas = document.getElementById("wheelCanvas");
+        const ctx = canvas.getContext("2d");
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height * 0.65;
+        const radius = 120;
+        const sections = 5;
+        let angle = 0;
+
+        function drawWheel() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Dessiner la demi-roue horizontale
+            for (let i = 0; i < sections; i++) {
+                let startAngle = (i * Math.PI / sections) + Math.PI;
+                let endAngle = ((i + 1) * Math.PI / sections) + Math.PI;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = i % 2 === 0 ? "#dcdcdc" : "#ffffff";
+                ctx.fill();
+                ctx.stroke();
+                ctx.fillStyle = "black";
+                ctx.font = "22px Arial";
+                ctx.fillText(i + 1, centerX + Math.cos((startAngle + endAngle) / 2) * radius * 0.7, centerY + Math.sin((startAngle + endAngle) / 2) * radius * 0.7);
+            }
+
+            // Dessiner la flèche
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            ctx.moveTo(0, -radius - 10);
+            ctx.lineTo(-10, -radius - 30);
+            ctx.lineTo(10, -radius - 30);
+            ctx.closePath();
+            ctx.fillStyle = "red";
+            ctx.fill();
+            ctx.restore();
+        }
+
+        document.getElementById("angleSlider").addEventListener("input", (event) => {
+            angle = (event.target.value * Math.PI / 180);
+            drawWheel();
+        });
+        
+        // Écouteur pour les touches du clavier
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft" && angle > -Math.PI / 2) {
+                angle -= Math.PI / 36; // Déplace la flèche de 5° vers la gauche
+            }
+            if (event.key === "ArrowRight" && angle < Math.PI / 2) {
+                angle += Math.PI / 36; // Déplace la flèche de 5° vers la droite
+            }
+            drawWheel();
+        });
+
+        // Écouteur pour les touches du clavier
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "q" && angle > -Math.PI / 2) {
+                angle -= Math.PI / 36; // Déplace la flèche de 5° vers la gauche
+            }
+            if (event.key === "d" && angle < Math.PI / 2) {
+                angle += Math.PI / 36; // Déplace la flèche de 5° vers la droite
+            }
+            drawWheel();
+        });
+
+        // Écouteur pour les touches du clavier
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "-" && angle > -Math.PI / 2) {
+                angle -= Math.PI / 36; // Déplace la flèche de 5° vers la gauche
+            }
+            if (event.key === "+" && angle < Math.PI / 2) {
+                angle += Math.PI / 36; // Déplace la flèche de 5° vers la droite
+            }
+            drawWheel();
+        });        
+
+        document.addEventListener("wheel", (event) => {
+            if (event.deltaY > 0 && angle > -Math.PI / 2) {
+                angle -= Math.PI / 36; // Déplace la flèche vers la gauche
+            } else if (event.deltaY < 0 && angle < Math.PI / 2) {
+                angle += Math.PI / 36; // Déplace la flèche vers la droite
+            }
+            drawWheel();
+        });        
+        drawWheel();
+
+
+        const musicToggle = document.getElementById("musicToggle");
+        const youtubePlayer = document.getElementById("youtubePlayer");
+
+        let isPlaying = true;
+
+        musicToggle.addEventListener("click", () => {
+            if (isPlaying) {
+                youtubePlayer.src = "https://www.youtube.com/embed/1GZZdIed_qw";
+                musicToggle.textContent = "🎵 Play";
+            } else {
+                youtubePlayer.src = "https://www.youtube.com/embed/1GZZdIed_qw?autoplay=1&loop=1";
+                musicToggle.textContent = "🎵 Pause";
+            }
+            isPlaying = !isPlaying;
+        });
+
+    </script>
+</body>
+</html>
